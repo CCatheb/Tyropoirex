@@ -25,6 +25,8 @@ class AbstractRestClient(ABC):
             self.password = auth_params['password']
         elif auth_type == "KEY" :
             self.key = auth_params['key']
+        elif auth_type == "NONE" :
+            pass
         else :
             raise AssertionError(f"Authentication type {auth_type} is not currently supported.")
 
