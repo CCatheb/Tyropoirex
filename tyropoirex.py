@@ -55,8 +55,8 @@ class AbstractRestClient(ABC):
         except urllib.error.HTTPError as err:
             response = err # Treat the error as a response
         except Exception as err:
-            msg = "HTTP request failed\nError: {0}\nURL: {1}\nMethod: {2}\nData: {3}\n" \
-                  "Headers: {4}".format(err, url, method, str(data), headers)
+            msg = "HTTP request failed\nError: {0}\nURL: {1}\nMethod: {2}\nResponse code: {3}\nData: {4}\n" \
+                  "Headers: {5}".format(err, url, method, response.code, str(data), headers)
             raise RestException(msg)
 
         # Treat response, and make it usable.
@@ -66,9 +66,9 @@ class AbstractRestClient(ABC):
             try:
                 resp_data = json.loads(result)
             except Exception as err:
-                msg = "HTTP request failed\nError: {0}\nURL: {1}\nMethod: {2}\nData: {3}\n" \
-                        "Payload: {4}".format(err, url, method, str(data), result)
-                raise RestException(msg) 
+                msg = "HTTP request failed\nError: {0}\nURL: {1}\nMethod: {2}\nResponse code: {3}\nData: {4}\n" \
+                  "Headers: {5}".format(err, url, method, response.code, str(data), headers)
+                raise RestException(msg)
         return(response.code, resp_data)
 
     def get(self, resource, payload=None):
